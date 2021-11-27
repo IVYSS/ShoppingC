@@ -1,0 +1,5 @@
+1 Pizza 80 20
+2 Name 30 20
+3 Steck 60 30
+4 Sandwich 60 20
+5 ThisFood 90 20

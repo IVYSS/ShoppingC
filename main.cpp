@@ -1,6 +1,6 @@
 //Heaader
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h> 
+#include <stdlib.h> // libary
 #include <windows.h> // use fucntions system.
 #include <iostream> // input output.
 #include <cstdio>
@@ -12,32 +12,35 @@ using namespace std;
 void writeFile(int idArr[5], string nameArr[5], int priceArr[5], int dcArr[5]){
 	ofstream MyFile("Data.txt");
 	for(int i;i < 5;i++){
+		// writeFile loop data
 		MyFile  << idArr[i] << " " << nameArr[i] << " " << priceArr[i] << " " << dcArr[i] << endl;
 	}
 	MyFile.close();
 }
+
 void sumOrder(string nameArr[5], int piecesArr[5], int sumArr[5]){
 	/* sumamry order on bill*/
 	cout << "\n__________________________This is your Order________________________\n\n";
 	for(int n=0; n < 5; n++){
-		if(nameArr[n].length() > 5){
+		if(nameArr[n].length() <= 6){
 		//	check len space bar \t
-			cout <<"\t" <<nameArr[n] << "\t" << "\tpieces : " << piecesArr[n] << "\t" << sumArr[n] << endl ;
+			cout <<"\t" <<nameArr[n] << "\t\t" << "\tpieces : " << piecesArr[n] << "\t" << sumArr[n] << endl ;
 		}
 		else{
-			cout <<"\t" <<nameArr[n] << "\t\t" << "\tpieces : " << piecesArr[n] << "\t" << sumArr[n] << endl;
+			cout <<"\t" <<nameArr[n] << "\t" << "\tpieces : " << piecesArr[n] << "\t" << sumArr[n] << endl;
 		}
 	}
-	int sumPrice = 0;
+	// Order Total
+	int sumPrice = 0; // last price
 	for(int s=0; s < 5; s++){
-		sumPrice += sumArr[s];
+		sumPrice += sumArr[s]; //sumPrice
 	}
 	cout << "\tOrder Total :" << "\t\t\t\t" << sumPrice << "  Baths.\n";
 }
 
 int cashCheck(int sumPrice, string nameArr[5], int piecesArr[5], int sumArr[5]){
 	/* check cash and check Change from cash*/
-	int cash;
+	int cash; // input cash
 	while (true){
 		cout << "Please put money :  ";
 		cin >> cash;
@@ -59,7 +62,6 @@ int cashCheck(int sumPrice, string nameArr[5], int piecesArr[5], int sumArr[5]){
 			break;
 		}
 	}
-	
 }
 
 void customer(int idArr[5], string nameArr[5], int priceArr[5], int dcArr[5]){
@@ -72,30 +74,38 @@ void customer(int idArr[5], string nameArr[5], int priceArr[5], int dcArr[5]){
 	for (int i = 0; i < 5; ++i) {
 		//		show manu
 		bathArr[i] = priceArr[i] - (priceArr[i] * dcArr[i] / 100);
-        cout << "["<< idArr[i] <<"]\t"
-		<<" : " << nameArr[i]
-		<< "\t\tprice :" << priceArr[i]
+		cout << "["<< idArr[i] <<"]\t"
+		<<" : ";
+		if (nameArr[i].length() < 5){
+			cout  <<nameArr[i]<< "\t\t";
+		}
+		else{
+			cout<<nameArr[i] << "\t" ;
+		}
+
+		cout << "\t\tprice :" << priceArr[i]
 		<< "\tDISCOUNT : " << dcArr[i] << "% "
 		<< "\tLast price :  " << bathArr[i] << "  Bath."<< endl;
     }
     cout << "\n____________________________________________________________________________\n\n";
 //   input pieces of Oders
-    cout << "\n|-------------------How many pieces do you want ?-------------------|\n";
+    cout << "\n|-------------------How many pieces do you want ?-------------------|\n"
+    << "\tif you not want this order : pull number 0\n\n";
 	for(int num = 0; num < 5; num++){
-		if(nameArr[num].length() > 5){
+		if(nameArr[num].length() <= 6){
 		//	check len space bar \t
-			cout <<"\t" << nameArr[num] << "\t" << "\tpieces(number) : ";
+		cout <<"\t" << nameArr[num] << "\t\t" << "\tpieces : ";
 		}
 		else{
-			cout <<"\t" << nameArr[num] << "\t\t" << "\tpieces(number) : ";
+			cout <<"\t" << nameArr[num] << "\t" << "\tpieces : ";
 		}
-		cin >> piecesArr[num];
+		cin >> piecesArr[num]; // input pieces
 		if (piecesArr[num] < 0){
 			cout << "\n-----------Plase select pieces between 0-10 -----------------\n\n";
 			num = num - 1;
 		}
 		else{
-			sumArr[num] = priceArr[num] * piecesArr[num];
+			sumArr[num] = bathArr[num] * piecesArr[num];
 		}
 	}
 	// summary order
@@ -120,69 +130,108 @@ void customer(int idArr[5], string nameArr[5], int priceArr[5], int dcArr[5]){
 
 int employee(int idArr[5], string nameArr[5], int priceArr[5], int dcArr[5]){
 	/* this function form edit discount*/
-	cout << "-------------- Edit Menu ------------\n";
+	cout << "\n\n----------------------------- Edit Menu -------------------------\n";
+	// show menu
 	for (int i = 0; i < 5; ++i) {
 		//		show manu
         cout << "["<< idArr[i] <<"]\t"
-		<<" : " << nameArr[i]
-		<< "\t\tprice :" << priceArr[i]
-		<< "\tDISCOUNT : " << dcArr[i] << "% \n";
-    }
-    cout << "Select menu to edit (number 1-5): ";
-    int discountArr[3] = {10, 20, 30};
-	int menu;
-    cin >> menu;
-    menu = menu - 1;
-    if(menu > 0 && menu < 6){
-    	// show menu again
-    	cout << "----------------- Menu " << menu << "----------------\n";
-	    cout << "["<< idArr[menu] <<"]\t"
-		<<" : " << nameArr[menu]
-		<< "\t\tprice :" << priceArr[menu]
-		<< "\tDISCOUNT : " << dcArr[menu] << "% \n"
-		<< "\t    [1]\t\t\t  [2]\t\t[3]\n" << "Select your section (number 1-3):  ";
-		int section;
-		cin >> section;
-		//check select to edit
-		if(section == 1){
-			string name;
-			cout << "Edit menu name (none-space): ";
-			cin >> name;
-			nameArr[menu] = name;
-			cout << "\n-----------Edit menu name is success-----------\n";
-			
-		}else if(section == 2){
-			int price;
-			cout << "Edit menu price : ";
-			cin >> price;
-			priceArr[menu] = price;
-			cout << "\n-----------Edit menu price is success-----------\n";
-			
-		}else if(section == 3){
-			// check choice to discount
-			cout << "---------------Select you promotion --------------------\n"
-			<< "[1] :  " << discountArr[0] << "  [2] :  " <<  discountArr[1]  << "  [3] :  " <<  discountArr[2] 
-			<< "\nEdit menu discount (number 1-3): ";
-			int select_discount;
-			cin >> select_discount;
-			dcArr[menu] = discountArr[select_discount-1];
-			cout << "\n-----------Edit menu discount is success-----------\n";
+		<<" : ";
+		if (nameArr[i].length() < 5){
+			cout  <<nameArr[i]<< "\t\t";
 		}
 		else{
-			cout << "\nPlease try again......\n";
+			cout<<nameArr[i] << "\t" ;
 		}
-	}else{
-		cout << "\nPlease try again......\n";
-	}
-    // calling function weiteFile	
-    writeFile(idArr, nameArr, priceArr, dcArr);
-
+		cout << "\t\tprice :" << priceArr[i]
+		<< "\tDISCOUNT : " << dcArr[i] << "% " << endl;
+    }
+    
+    cout << "Select menu to edit (number 1-5): ";
+    int discountArr[3] = {10, 20, 30}; // %
+    int menu;
+    cin >> menu;
+    menu = menu - 1;
+    while(true){
+	    if(menu >= 0 && menu < 5){
+	    	// show menu again
+	    	cout << "----------------- Menu " << menu + 1 << "----------------\n";
+		    cout << "["<< idArr[menu] <<"]\t"
+			<<" : " << nameArr[menu]
+			<< "\t\tprice :" << priceArr[menu]
+			<< "\tDISCOUNT : " << dcArr[menu] << "% \n"
+			<< "\t    [1]\t\t\t  [2]\t\t[3]\n" << "Select your section (number 1-3):  ";
+			int section;
+			cin >> section;
+			//check select to edit
+			if(section == 1){
+				string name;
+				cout << "Edit menu name (none-space): ";
+				cin >> name;
+				nameArr[menu] = name;
+				cout << "\n-----------Edit menu name is success-----------\n";
+				
+			}else if(section == 2){
+				int price;
+				cout << "Edit menu price : ";
+				cin >> price;
+				priceArr[menu] = price;
+				cout << "\n-----------Edit menu price is success-----------\n";
+				
+			}else if(section == 3){
+				// check choice to discount
+				cout << "---------------Select you promotion --------------------\n"
+				<< "[1] :  " << discountArr[0] << "%  [2] :  " <<  discountArr[1]  << "%  [3] :  " <<  discountArr[2]  << "%"
+				<< "\nEdit menu discount (number 1-3): ";
+				int select_discount;
+				cin >> select_discount;
+				if(select_discount < 4){
+					dcArr[menu] = discountArr[select_discount-1];
+					cout << "\n-----------Edit menu discount is success-----------\n";
+				}else{
+					cout << "\nPlease try again......\n";
+					Sleep(1500);
+					employee(idArr, nameArr, priceArr, dcArr);
+				}
+			}
+			else{
+				cout << "\nPlease try again......\n\n";
+				employee(idArr, nameArr, priceArr, dcArr);
+			}
+		}
+		else
+		{
+			cout << "\nPlease try again......\n\n";
+			employee(idArr, nameArr, priceArr, dcArr);
+		}
+		
+		cout << "Would you like to do another transection (1=Yes, 2=No, 3=Exit) :  ";
+		int con;
+		cin >> con; //check Selecttion (1 yes 2 No 3 Exit)
+		if (con == 1){
+			// calling function weiteFile
+			continue;
+		}
+		else if(con == 2){
+			writeFile(idArr, nameArr, priceArr, dcArr);
+			cout << "\n-----------Edit menu success-----------\n";
+			employee(idArr, nameArr, priceArr, dcArr);
+			break;
+		}else if (con == 3){
+			writeFile(idArr, nameArr, priceArr, dcArr);
+			break;
+		}else{
+			cout << "\nPlease try again......\n";
+			Sleep(1500); 
+			system("cls");
+		}
+	}	
 }
 
+
 int runner(){
-	system("color 5e");
+	system("color 5e"); //color 
 //	read File data.txt
-	int idArr[5];
+	int idArr[5]; 
 	string nameArr[5];
 	int priceArr[5];
 	int dcArr[5];
@@ -209,7 +258,7 @@ int runner(){
 		Sleep(1500);
 		system("cls");
 	}
-	
+
 //	main runner
 	int role;
 	while(true){
@@ -225,12 +274,12 @@ int runner(){
 		cin >> role;
 		if(role == 1){
 			customer(idArr, nameArr, priceArr, dcArr);
-				break;
+			break;
 		}else if (role == 2){
 			employee(idArr, nameArr, priceArr, dcArr);
 			break;
 		}else{
-			cout << " Select your role "<<"please try again." << endl;
+			cout << "\n Select your role "<<"please try again." << endl;
 			Sleep(1200);
 			system("cls"); //close progrem	
 		}
